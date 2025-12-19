@@ -1,0 +1,34 @@
+{
+  "sponsors": [
+    {
+      "id": "imrc-default",
+      "active": true,
+      "name": "IMRC Setup Manager",
+      "logo": "https://lh3.googleusercontent.com/d/1N0r6gCKJurJJa8FQoumIMSUiu9XGFIGQ",
+      "url": "https://www.shopimrc.com",
+      "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+      "startDate": "2025-01-01",
+      "endDate": "2026-01-01"
+    },
+    {
+      "id": "weekday-sponsor",
+      "active": false,
+      "name": "Available Banner",
+      "logo": "https://shopimrc.com/assets/sponsors/available.png",
+      "url": "https://www.shopimrc.com/contact",
+      "days": ["mon", "tue", "wed", "thu"],
+      "startDate": "2025-02-01",
+      "endDate": "2025-12-31"
+    },
+    {
+      "id": "weekend-sponsor",
+      "active": false,
+      "name": "Available Banner",
+      "logo": "https://shopimrc.com/assets/sponsors/available.png",
+      "url": "https://www.shopimrc.com/contact",
+      "days": ["fri", "sat", "sun"],
+      "startDate": "2025-02-01",
+      "endDate": "2025-12-31"
+    }
+  ]
+}
