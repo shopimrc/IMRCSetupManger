@@ -4,8 +4,7 @@
       "id": "imrc-default",
       "active": true,
       "name": "IMRC Setup Manager",
-      "logo": "https://raw.githubusercontent.com/shopimrc/sponsor-assets/IMRC/logo.png
-",
+      "logo": "https://raw.githubusercontent.com/shopimrc/sponsor-assets/IMRC/logo.png",
       "url": "https://www.shopimrc.com",
       "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       "startDate": "2025-01-01",
