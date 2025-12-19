@@ -12,9 +12,9 @@
     },
     {
       "id": "weekday-sponsor",
-      "active": false,
+      "active": true,
       "name": "Available Banner",
-      "logo": "https://shopimrc.com/assets/sponsors/available.png",
+      "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/main/sponsor-assets/IMRC/YourBannerHere.png",
       "url": "https://www.shopimrc.com/contact",
       "days": ["mon", "tue", "wed", "thu"],
       "startDate": "2025-02-01",
@@ -22,10 +22,10 @@
     },
     {
       "id": "weekend-sponsor",
-      "active": false,
-      "name": "Available Banner",
-      "logo": "https://shopimrc.com/assets/sponsors/available.png",
-      "url": "https://www.shopimrc.com/contact",
+      "active": true,
+      "name": "True Ink - Apparel & Clothing",
+      "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/main/sponsor-assets/TrueInk/Logo.png",
+      "url": "https://www.facebook.com/profile.php?id=61584026367298",
       "days": ["fri", "sat", "sun"],
       "startDate": "2025-02-01",
       "endDate": "2025-12-31"
