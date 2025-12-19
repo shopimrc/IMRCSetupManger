@@ -5,7 +5,7 @@
       "active": true,
       "name": "Available Banner",
       "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/main/sponsor-assets/IMRC/YourBannerHere.png",
-      "url": "https://www.shopimrc.com/contact",
+      "url": "https://www.shopimrc.com/pages/contact",
       "days": ["mon", "tue", "wed", "thu"],
       "startDate": "2025-02-01",
       "endDate": "2025-12-31"
