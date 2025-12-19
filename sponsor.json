@@ -22,7 +22,7 @@
     },
     {
           "id": "imrc-default",
-      "active": true,
+      "active": false,
       "name": "IMRC Setup Manager",
       "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/main/sponsor-assets/IMRC/logo.png",
       "url": "https://www.shopimrc.com",
