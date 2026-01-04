@@ -16,7 +16,7 @@
       "id": "weekend-sponsor",
       "active": true,
       "name": "True Ink - Apparel & Clothing",
-      "nameColor": "#000000",
+      "nameColor": "#FFFFFF",
       "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/62cbe8d7be9e290568e81fe382075cc0c649e3b8/sponsor-assets/TrueInk/logo.png",
       "url": "https://www.facebook.com/profile.php?id=61584026367298",
       "days": ["fri", "sat", "sun"],
