@@ -4,7 +4,7 @@
       "id": "weekday-sponsor",
       "active": true,
       "name": "Available Banner",
-      "nameColor": "#0A0F1A",
+      "nameColor": "FFFFFF",
       "logo": "https://raw.githubusercontent.com/shopimrc/IMRCSetupManger/main/sponsor-assets/IMRC/YourBannerHere.png",
       "url": "https://www.shopimrc.com/pages/contact",
       "days": ["mon", "tue", "wed", "thu"],
