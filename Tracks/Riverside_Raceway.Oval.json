@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+
+  "name": "Riverside Raceway",
+  "trackType": "Oval",
+
+  "liveRcUrl": "www.shopimrc.liverc.com",
+  "streetAddress": "350 Pennsylvania West",
+  "cityState": "Warren, PA",
+  "zip": "16365",
+  "phone": "",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Gray Carpet",
+  "tractionLevel": "Medium",
+  "runLine": "125",
+  "trackDimensions": "55'x75'",
+  "notes": "Semi Tri-Oval with the famous `Pole`"
+}
