@@ -1,0 +1,22 @@
+/* Template 
+
+{
+  "schemaVersion": 1,
+
+  "name": "Phoenix RC Racing Club",
+  "trackType": "Oval",
+
+  "liveRcUrl": "https://thestable.liverc.com/",
+  "streetAddress": "112 Main Street",
+  "cityState": "East Randolph, NY",
+  "zip": "14730",
+  "phone": "",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Gray",
+  "tractionLevel": "Medium",
+  "runLine": "103",
+  "trackDimensions": "24' x 60'",
+  "notes": "Called `The Paperclib`"
+}
+*/
