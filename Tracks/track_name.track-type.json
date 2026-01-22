@@ -1,0 +1,22 @@
+/* Template 
+
+{
+  "schemaVersion": 1,
+
+  "name": "",
+  "trackType": "",
+
+  "liveRcUrl": "",
+  "streetAddress": "",
+  "cityState": "",
+  "zip": "",
+  "phone": "",
+
+  "direction": "",
+  "surface": "",
+  "tractionLevel": "",
+  "runLine": "",
+  "trackDimensions": "",
+  "notes": ""
+}
+*/
