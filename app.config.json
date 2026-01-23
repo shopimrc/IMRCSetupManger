@@ -1,0 +1,9 @@
+{
+  "appEnabled": true,
+  "minVersion": "1.2.0",
+  "latestVersion": "1.2.0",
+  "forceUpdate": true,
+  "message": "Critical update required to continue.",
+  "android": { "storeUrl": "https://play.google.com/store/apps/details?id=com.joshy788.imrcsetupmanager" },
+  "ios": { "storeUrl": "https://apps.apple.com/app/id0000000000" }
+}
