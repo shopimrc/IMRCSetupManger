@@ -1,7 +1,7 @@
 {
   "appEnabled": true,
-  "minVersion": "1.2.1",
-  "latestVersion": "1.2.1",
+  "minVersion": "1.2.2",
+  "latestVersion": "1.2.2",
   "forceUpdate": true,
   "message": "Critical update required to continue.",
   "android": { "storeUrl": "https://play.google.com/store/apps/details?id=com.joshy788.imrcsetupmanager" },
