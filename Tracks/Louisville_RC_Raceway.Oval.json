@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+
+  "name": "Louisville R/C Raceway",
+  "trackType": "Oval",
+
+  "liveRcUrl": "",
+  "streetAddress": "1711 West Main St",
+  "cityState": "Louisville, OH",
+  "zip": "44641",
+  "phone": "",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Black Gen1",
+  "tractionLevel": "Medium",
+  "runLine": "100",
+  "trackDimensions": "",
+  "notes": ""
+}
