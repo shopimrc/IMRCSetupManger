@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+
+  "name": "High Voltage R/C Speeday",
+  "trackType": "Oval",
+
+  "liveRcUrl": "https://highvoltagercspeedway.liverc.com",
+  "streetAddress": "235 Camson Rd. Suite B",
+  "cityState": "Anderson, SC",
+  "zip": "29625",
+  "phone": "",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Black Gen 2",
+  "tractionLevel": "High",
+  "runLine": "135",
+  "trackDimensions": "36' x 80'",
+  "notes": "1-2 per week racing with 64 pitspots lighted and powered. Visit our High Voltage Facebook page here -> https://www.facebook.com/HVRCSadmin?rdid=m5cBbpX1vi4jEatC&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1TLEec8cgs%2F#"
+}
