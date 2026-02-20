@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+
+  "name": "N.O.R.C.A.R. R/C",
+  "trackType": "Oval",
+
+  "liveRcUrl": "https://norcar.liverc.com",
+  "streetAddress": "9911 Avon Lake Rd #140",
+  "cityState": "Burbank, OH",
+  "zip": "44214",
+  "phone": "",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Gen 2",
+  "tractionLevel": "High",
+  "runLine": "164",
+  "trackDimensions": "36x100",
+  "notes": "Also known as `The Gate`"
+}
