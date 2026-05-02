@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+
+  "name": "Austintown Hobby & Raceway",
+  "trackType": "Oval",
+
+  "liveRcUrl": "https://austintownhobbyandraceway.liverc.com/",
+  "streetAddress": "3320 Mahoning Ave",
+  "cityState": "Youngstown, OH",
+  "zip": "44509",
+  "phone": "330-793-9233",
+
+  "direction": "Counter-Clockwise",
+  "surface": "CRC Black Gen 2",
+  "tractionLevel": "High",
+  "runLine": "",
+  "trackDimensions": "36' x 92'",
+  "notes": ""
+}
