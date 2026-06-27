@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Bulldog RC-Gem City Gun Club",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "8865 Donlin Rd",
+    "cityState": "Erie, PA",
+    "zip": "16510",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Map marker name is Bulldog RC-Gem City Gun Club. This is the Erie-area marker from the KMZ."
+}

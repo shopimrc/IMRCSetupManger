@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "The Lower Level RC Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://lowerlevelrc.liverc.com/",
+    "streetAddress": "846 N 8th St",
+    "cityState": "Niles, MI",
+    "zip": "49120",
+    "phone": "269-419-3045",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

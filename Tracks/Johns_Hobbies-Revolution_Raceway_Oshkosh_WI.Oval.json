@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "John's Hobbies-Revolution Raceway  Oshkosh, WI",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://revolutionraceway.liverc.com/",
+    "streetAddress": "807 Oregon St",
+    "cityState": "Oshkosh, WI",
+    "zip": "54902",
+    "phone": "920-426-1840",
+
+    "direction": "",
+    "surface": "Carpet/Clay",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Map name included Oshkosh, WI. John's Hobbies/Revolution Raceway source says dirt track racing, carpet racing, and crawler track."
+}

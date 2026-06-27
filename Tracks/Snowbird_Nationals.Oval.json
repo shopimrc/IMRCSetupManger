@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Snowbird Nationals",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://snowbirdsoval.liverc.com/",
+    "streetAddress": "3011 Maingate Lane",
+    "cityState": "Kissimmee, FL",
+    "zip": "34747",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

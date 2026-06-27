@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "OnTrack Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://ontrackrc.liverc.com/",
+    "streetAddress": "5701 Moffett Rd Ste N",
+    "cityState": "Mobile, AL",
+    "zip": "36618",
+    "phone": "251-298-7080",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

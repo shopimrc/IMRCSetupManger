@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Riverside RC Race Club - St Johnsbury, VT",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "2176 Portland St",
+    "cityState": "St. Johnsbury, VT",
+    "zip": "05819",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

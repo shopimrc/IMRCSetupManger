@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Olson Raceway Park",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://olsonracewaypark.liverc.com/",
+    "streetAddress": "4655 Cummins Ct",
+    "cityState": "Fort Myers, FL",
+    "zip": "33905",
+    "phone": "352-279-8807",
+
+    "direction": "",
+    "surface": "Asphalt",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "Asphalt flat short oval",
+    "notes": ""
+}

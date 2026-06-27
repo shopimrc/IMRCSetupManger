@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Twin City Carpet Oval",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Minneapolis, MN",
+    "zip": "",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Map marker only. Street address/phone/LiveRC need verification."
+}

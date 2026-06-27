@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Grand River RC",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://grandriverrc.liverc.com/",
+    "streetAddress": "2605 Sanford Ave. SW",
+    "cityState": "Grandville, MI",
+    "zip": "49418",
+    "phone": "269-338-2114",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "60' x 40'",
+    "notes": ""
+}

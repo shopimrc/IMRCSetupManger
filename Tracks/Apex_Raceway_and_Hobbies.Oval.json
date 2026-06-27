@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Apex Raceway and Hobbies",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://apexraceway.liverc.com/",
+    "streetAddress": "1172 Park Ave",
+    "cityState": "Murfreesboro, TN",
+    "zip": "37129",
+    "phone": "615-848-4908",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

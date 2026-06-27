@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Pemberton Raceworks",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Utica, NY",
+    "zip": "13502",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Map marker only. Public address/phone not confirmed."
+}

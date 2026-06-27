@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Black Swamp Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://oneeighthracers.liverc.com/",
+    "streetAddress": "",
+    "cityState": "Bowling Green, OH",
+    "zip": "43402",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "KMZ has two Black Swamp markers. Street address still needs verification."
+}

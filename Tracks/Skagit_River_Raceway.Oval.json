@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Skagit River Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://skagitriverraceway.liverc.com/",
+    "streetAddress": "501 Taylor St",
+    "cityState": "Mount Vernon, WA",
+    "zip": "98273",
+    "phone": "",
+
+    "direction": "",
+    "surface": "CRC Black Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "48' x 80'",
+    "notes": "Indoor carpet oval/on-road venue listed at Skagit County Fairgrounds. Outdoor dirt oval venue is 1740 E Whitmarsh Rd, Burlington, WA 98233."
+}

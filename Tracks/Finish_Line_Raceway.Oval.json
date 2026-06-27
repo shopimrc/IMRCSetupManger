@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Finish Line Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://finishlineraceway.liverc.com/",
+    "streetAddress": "107 E. State Rd. 4",
+    "cityState": "Hudson, IN",
+    "zip": "46747",
+    "phone": "260-587-3032",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "90' x 48'",
+    "notes": ""
+}

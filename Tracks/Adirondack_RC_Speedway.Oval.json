@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Adirondack RC Speedway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://adirondackrcspeedway.liverc.com/",
+    "streetAddress": "10396 US-9",
+    "cityState": "Champlain, NY",
+    "zip": "12919",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "LiveRC/search snippets conflict between 396 US-9 and 10396 US-9. KMZ marker aligns with Champlain, NY; verify street number."
+}

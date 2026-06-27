@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Polk County R/C Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://polkcountyrcraceway.liverc.com/",
+    "streetAddress": "1500 S. Carl",
+    "cityState": "Bolivar, MO",
+    "zip": "65613",
+    "phone": "417-298-0942",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

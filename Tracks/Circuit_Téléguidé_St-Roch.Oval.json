@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Circuit Téléguidé St-Roch",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Saint-Roch-de-l'Achigan, QC",
+    "zip": "",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Street address/phone/LiveRC need verification."
+}

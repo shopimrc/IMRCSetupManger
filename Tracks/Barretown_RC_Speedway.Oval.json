@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Barretown RC Speedway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Barre, VT",
+    "zip": "",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Public listings confirm Barre, VT oval. Street address/phone need verification."
+}

@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "War Zone Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://warzoneraceway.liverc.com/",
+    "streetAddress": "6529 US 41",
+    "cityState": "Ruskin, FL",
+    "zip": "33570",
+    "phone": "941-779-6523",
+
+    "direction": "",
+    "surface": "Asphalt",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "covered banked asphalt oval",
+    "notes": ""
+}

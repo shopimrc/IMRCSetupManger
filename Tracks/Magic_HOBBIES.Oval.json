@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Magic HOBBIES",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Strasburg, OH",
+    "zip": "",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Street address/phone/LiveRC need verification."
+}

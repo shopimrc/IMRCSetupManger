@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Darlington R/C Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "",
+    "streetAddress": "",
+    "cityState": "Darlington, IN",
+    "zip": "47940",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Street address and phone need verification."
+}

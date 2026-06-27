@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "HobbyTown Batavia Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://hobbytownstcharles.liverc.com/",
+    "streetAddress": "341 N Randall Rd",
+    "cityState": "Batavia, IL",
+    "zip": "60510",
+    "phone": "630-587-1256",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

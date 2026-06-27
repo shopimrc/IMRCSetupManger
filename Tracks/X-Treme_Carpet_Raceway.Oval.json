@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "X-Treme Carpet Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://xtremecarpetraceway.liverc.com/",
+    "streetAddress": "",
+    "cityState": "Bay City, MI",
+    "zip": "48706",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Street address/phone need verification."
+}

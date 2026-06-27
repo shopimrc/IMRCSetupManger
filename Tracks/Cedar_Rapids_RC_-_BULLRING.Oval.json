@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Cedar Rapids RC - BULLRING",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://crbullring.liverc.com/",
+    "streetAddress": "3800 Wilson Ave SW",
+    "cityState": "Cedar Rapids, IA",
+    "zip": "52404",
+    "phone": "303-898-2490",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "120 ft",
+    "trackDimensions": "",
+    "notes": "LiveRC describes carpet short track oval with 120 ft run line."
+}

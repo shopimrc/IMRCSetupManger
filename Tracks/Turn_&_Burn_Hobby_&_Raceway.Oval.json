@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Turn & Burn Hobby & Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://turnandburnraceway.liverc.com/",
+    "streetAddress": "11141 Old U.S. Hwy 52 #10",
+    "cityState": "Winston-Salem, NC",
+    "zip": "27107",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

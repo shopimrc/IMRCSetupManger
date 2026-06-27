@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "608 RC Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://608rcraceway.liverc.com/",
+    "streetAddress": "112 Swift St",
+    "cityState": "Edgerton, WI",
+    "zip": "53534",
+    "phone": "608-751-4438",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": ""
+}

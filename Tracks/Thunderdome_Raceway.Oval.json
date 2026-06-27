@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+
+    "name": "Thunderdome Raceway",
+    "trackType": "Oval",
+
+    "liveRcUrl": "https://thunderdomeoval.liverc.com/",
+    "streetAddress": "7085 Highland Dr",
+    "cityState": "Morris, IL",
+    "zip": "60450",
+    "phone": "",
+
+    "direction": "",
+    "surface": "Carpet",
+    "tractionLevel": "",
+    "runLine": "",
+    "trackDimensions": "",
+    "notes": "Thunderdome public pages list carpet oval/road course."
+}
