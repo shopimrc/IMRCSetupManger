@@ -1,0 +1,20 @@
+
+{
+  "schemaVersion": 1,
+
+  "name": "Averyville RC Raceway And Hobby",
+  "trackType": "Oval",
+
+  "liveRcUrl": "https://averyvillerc.liverc.com",
+  "streetAddress": "19222 Avery Rd.",
+  "cityState": "Three Oaks, MI",
+  "zip": "49128",
+  "phone": "12695998749",
+
+  "direction": "Counter-Clockwise",
+  "surface": "Clay",
+  "tractionLevel": "",
+  "runLine": "",
+  "trackDimensions": "80x40",
+  "notes": "Any 2 wire transponder, mylaps, MRT, Vostok"
+}
