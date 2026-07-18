@@ -1,0 +1,643 @@
+// app/services/cloudSync.js
+// ✅ Cloud sync using Firebase JS SDK Firestore (Expo Go compatible)
+//
+// Stores a "backup blob" of selected AsyncStorage keys in:
+//   users/{uid}/imrc/backup_main
+//
+// Includes tombstones (@deleted_v1) so deletes don't resurrect.
+//
+// ✅ Adds richer sync telemetry to the SAME backup_main doc:
+//   sync: { lastDirection, lastSyncAtMs, deviceId, platform, appVersion, hashes, counts, changedKeys, lastError, ... }
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
+import { db } from "./firebaseClient";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+
+const SYNC_KEYS = [
+  "@vehicles",
+  "@tracks",
+  "@setups",
+  "@recentChanges_v1",
+  "@raceDayRuns_v1",
+  "@raceDaySessions_v1",
+  "@raceDayActive_v1",
+  "@raceDayEnded_v1",
+  "@activeRaceDay",
+  "@deleted_v1", // ✅ tombstones
+];
+
+const META_LOCAL_KEY = "@cloudSync_meta_v3";
+const DEVICE_ID_KEY = "@cloudSync_deviceId_v1";
+
+function backupDocRef(uid) {
+  return doc(db, `users/${uid}/imrc/backup_main`);
+}
+
+function hashString(str) {
+  const s = String(str || "");
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = (h * 33) ^ s.charCodeAt(i);
+  return (h >>> 0).toString(16);
+}
+
+function safeJsonParse(raw, fallback) {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
+
+
+function sanitizeRecentChangesArray(input) {
+  const arr = Array.isArray(input) ? input : [];
+  const cleaned = [];
+  for (const x of arr) {
+    if (!x || typeof x !== "object") continue;
+
+    const text = String(x.text ?? x.title ?? x.label ?? "").trim();
+    const type = String(x.type ?? "").trim();
+    const ts = Number(x.ts ?? x.atMs ?? x.timeMs ?? x.createdAtMs ?? 0) || 0;
+    const raceDayId = String(x.raceDayId ?? x.sessionId ?? x.id ?? "").trim();
+
+    // drop truly empty "blank rows"
+    if (!text && !type && !ts && !raceDayId) continue;
+
+    cleaned.push({ ...x, text, type, ts, raceDayId });
+  }
+  // newest first (stable enough)
+  cleaned.sort((a, b) => (Number(b.ts || 0) - Number(a.ts || 0)));
+  return cleaned;
+}
+
+
+function payloadStats(payload) {
+  const vehicles = safeJsonParse(payload?.["@vehicles"] || "[]", []);
+  const tracks = safeJsonParse(payload?.["@tracks"] || "[]", []);
+  const setups = safeJsonParse(payload?.["@setups"] || "[]", []);
+  const runs = safeJsonParse(payload?.["@raceDayRuns_v1"] || "[]", []);
+  const tombstones = safeJsonParse(payload?.["@deleted_v1"] || "[]", []);
+
+  const counts = {
+    vehicles: Array.isArray(vehicles) ? vehicles.length : 0,
+    tracks: Array.isArray(tracks) ? tracks.length : 0,
+    setups: Array.isArray(setups) ? setups.length : 0,
+    runs: Array.isArray(runs) ? runs.length : 0,
+    tombstones: Array.isArray(tombstones) ? tombstones.length : 0,
+  };
+
+  let payloadBytes = 0;
+  try {
+    payloadBytes = JSON.stringify(payload || {}).length;
+  } catch {
+    payloadBytes = 0;
+  }
+
+  return { counts, payloadBytes };
+}
+
+async function readLocalPayload() {
+  const pairs = await AsyncStorage.multiGet(SYNC_KEYS);
+  const payload = {};
+  for (const [k, v] of pairs) payload[k] = v ?? null;
+  return payload;
+}
+
+async function computeLocalPayloadHash() {
+  const pairs = await AsyncStorage.multiGet(SYNC_KEYS);
+  const joined = pairs
+    .map(([k, v]) => `${k}=${v == null ? "" : String(v)}`)
+    .join("\n");
+  return hashString(joined);
+}
+
+async function isLocalEmpty() {
+  const pairs = await AsyncStorage.multiGet(SYNC_KEYS);
+  for (const [, v] of pairs) {
+    if (v == null) continue;
+    const t = String(v).trim();
+    if (!t) continue;
+    if (t === "[]" || t === "{}") continue;
+    return false;
+  }
+  return true;
+}
+
+async function writeLocalPayload(payload) {
+  const ops = [];
+  for (const k of SYNC_KEYS) {
+    const v = payload?.[k];
+    ops.push([k, v == null ? "" : String(v)]);
+  }
+  await AsyncStorage.multiSet(ops);
+}
+
+async function getMeta() {
+  try {
+    const raw = await AsyncStorage.getItem(META_LOCAL_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+async function setMeta(next) {
+  try {
+    await AsyncStorage.setItem(META_LOCAL_KEY, JSON.stringify(next || {}));
+  } catch {}
+}
+
+async function getDeviceId() {
+  try {
+    let id = await AsyncStorage.getItem(DEVICE_ID_KEY);
+    if (id) return id;
+    id = `dev_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
+    await AsyncStorage.setItem(DEVICE_ID_KEY, id);
+    return id;
+  } catch {
+    return `dev_unknown_${Date.now().toString(16)}`;
+  }
+}
+
+function getAnyId(item) {
+  if (!item || typeof item !== "object") return null;
+  const candidates = [item.id, item.setupId, item._id, item.uuid];
+  for (const c of candidates) {
+    if (c === null || c === undefined) continue;
+    const s = String(c).trim();
+    if (s) return s;
+  }
+  return null;
+}
+
+function stableStringify(obj) {
+  if (obj === null) return "null";
+  if (typeof obj !== "object") return JSON.stringify(obj);
+  const seen = new WeakSet();
+  const walk = (v) => {
+    if (v === null) return "null";
+    if (typeof v !== "object") return JSON.stringify(v);
+    if (seen.has(v)) return '"[Circular]"';
+    seen.add(v);
+    if (Array.isArray(v)) return "[" + v.map(walk).join(",") + "]";
+    const keys = Object.keys(v).sort();
+    return (
+      "{" +
+      keys.map((k) => JSON.stringify(k) + ":" + walk(v[k])).join(",") +
+      "}"
+    );
+  };
+  return walk(obj);
+}
+
+function fingerprint(item) {
+  return hashString(stableStringify(item));
+}
+
+function mergeArrayById(localArr, cloudArr) {
+  const l = Array.isArray(localArr) ? localArr : [];
+  const c = Array.isArray(cloudArr) ? cloudArr : [];
+
+  const byKey = new Map();
+
+  for (const item of c) {
+    const id = getAnyId(item);
+    const key = id ? `id:${id}` : `fp:${fingerprint(item)}`;
+    byKey.set(key, item);
+  }
+
+  for (const item of l) {
+    const id = getAnyId(item);
+    const key = id ? `id:${id}` : `fp:${fingerprint(item)}`;
+
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, item);
+      continue;
+    }
+
+    const a = existing;
+    const b = item;
+
+    const aUpdated = Number(a?.updatedAt || a?.ts || a?.modifiedAt || 0);
+    const bUpdated = Number(b?.updatedAt || b?.ts || b?.modifiedAt || 0);
+
+    if (aUpdated && bUpdated) byKey.set(key, bUpdated >= aUpdated ? b : a);
+    else byKey.set(key, { ...a, ...b });
+  }
+
+  return Array.from(byKey.values());
+}
+
+function normalizeTombstones(arr) {
+  const list = Array.isArray(arr) ? arr : [];
+  const map = new Map();
+  for (const t of list) {
+    const type = String(t?.type || "").trim();
+    const id = String(t?.id || "").trim();
+    if (!type || !id) continue;
+    const deletedAt = Number(t?.deletedAt || 0) || 0;
+    const key = `${type}:${id}`;
+    const prev = map.get(key);
+    if (!prev || deletedAt > Number(prev.deletedAt || 0)) {
+      map.set(key, { type, id, deletedAt });
+    }
+  }
+  return Array.from(map.values());
+}
+
+function mergeTombstones(localArr, cloudArr) {
+  return normalizeTombstones([
+    ...(Array.isArray(cloudArr) ? cloudArr : []),
+    ...(Array.isArray(localArr) ? localArr : []),
+  ]);
+}
+
+function applyTombstonesToArrays(payload) {
+  const tombs = safeJsonParse(payload["@deleted_v1"] || "[]", []);
+  if (!Array.isArray(tombs) || !tombs.length) return payload;
+
+  const delSetups = new Set(tombs.filter((t) => t.type === "setup").map((t) => t.id));
+  const delVehicles = new Set(tombs.filter((t) => t.type === "vehicle").map((t) => t.id));
+  const delTracks = new Set(tombs.filter((t) => t.type === "track").map((t) => t.id));
+
+  const setups = safeJsonParse(payload["@setups"] || "[]", []);
+  const vehicles = safeJsonParse(payload["@vehicles"] || "[]", []);
+  const tracks = safeJsonParse(payload["@tracks"] || "[]", []);
+
+  payload["@setups"] = JSON.stringify((Array.isArray(setups) ? setups : []).filter((s) => {
+    const id = getAnyId(s);
+    return !id ? true : !delSetups.has(String(id));
+  }));
+
+  payload["@vehicles"] = JSON.stringify((Array.isArray(vehicles) ? vehicles : []).filter((v) => {
+    const id = v?.id != null ? String(v.id) : "";
+    return !id ? true : !delVehicles.has(id);
+  }));
+
+  payload["@tracks"] = JSON.stringify((Array.isArray(tracks) ? tracks : []).filter((t) => {
+    const id = t?.id != null ? String(t.id) : "";
+    return !id ? true : !delTracks.has(id);
+  }));
+
+  payload["@deleted_v1"] = JSON.stringify(tombs);
+  return payload;
+}
+
+function mergePayloadStrings(localStr, cloudStr, key) {
+  const ARRAY_KEYS = new Set(["@vehicles", "@tracks", "@setups", "@raceDayRuns_v1"]);
+
+  // ✅ Keys where an explicit empty string means "clear this" and MUST override cloud.
+  // This prevents ended RaceDay state from being pulled back from cloud.
+  const CLEARABLE_KEYS = new Set(["@activeRaceDay", "@raceDayActive_v1", "@raceDayEnded_v1", "@recentChanges_v1"]);
+
+  if (key === "@deleted_v1") {
+    return JSON.stringify(
+      mergeTombstones(
+        safeJsonParse(localStr || "[]", []),
+        safeJsonParse(cloudStr || "[]", [])
+      )
+    );
+  }
+
+  if (ARRAY_KEYS.has(key)) {
+    return JSON.stringify(
+      mergeArrayById(
+        safeJsonParse(localStr || "[]", []),
+        safeJsonParse(cloudStr || "[]", [])
+      )
+    );
+  }
+
+  // ✅ For CLEARABLE_KEYS: if localStr exists (even ""), local wins.
+  // If local is truly missing (null/undefined), keep cloud.
+  if (CLEARABLE_KEYS.has(key)) {
+    return localStr === null || localStr === undefined
+      ? String(cloudStr ?? "")
+      : String(localStr);
+  }
+
+  // Default behavior: local wins only when non-empty; otherwise keep cloud.
+  const l = String(localStr ?? "").trim();
+  return l ? String(localStr) : String(cloudStr ?? "");
+}
+
+
+async function buildMergedPayload({ localPayload, cloudPayload }) {
+  const merged = {};
+  for (const k of SYNC_KEYS) merged[k] = mergePayloadStrings(localPayload?.[k], cloudPayload?.[k], k);
+
+  // Apply tombstones to core arrays first.
+  const withTombs = applyTombstonesToArrays(merged);
+
+  // --- Normalize + sanitize recent changes so blank rows never persist ---
+  try {
+    const changes = safeJsonParse(withTombs?.["@recentChanges_v1"] || "[]", []);
+    const cleaned = sanitizeRecentChangesArray(changes);
+    withTombs["@recentChanges_v1"] = JSON.stringify(cleaned);
+  } catch {
+    withTombs["@recentChanges_v1"] = "[]";
+  }
+
+  // --- Keep ONLY the most recent 3 Race Day sessions (and prune related logs/runs) ---
+  try {
+    const sessions = safeJsonParse(withTombs?.["@raceDaySessions_v1"] || "[]", []);
+    const list = Array.isArray(sessions) ? sessions : [];
+
+    // newest first by createdAtMs -> startedAtMs -> updatedAtMs fallback
+    list.sort((a, b) =>
+      Number(b?.createdAtMs || b?.startedAtMs || b?.updatedAtMs || 0) -
+      Number(a?.createdAtMs || a?.startedAtMs || a?.updatedAtMs || 0)
+    );
+
+    const kept = list.slice(0, 3);
+    const keepIds = new Set(kept.map((s) => String(s?.id || s?.sessionId || "")).filter(Boolean));
+
+    // ENDED always wins over ACTIVE for same id
+    const byId = {};
+    for (const s of kept) {
+      const id = String(s?.id || s?.sessionId || "").trim();
+      if (!id) continue;
+      const status = String(s?.status || "").toLowerCase();
+      if (!byId[id]) {
+        byId[id] = { ...s, id, status: status || "active" };
+      } else {
+        const prev = String(byId[id]?.status || "").toLowerCase();
+        if (prev !== "ended" && status === "ended") byId[id] = { ...byId[id], ...s, id, status: "ended" };
+      }
+    }
+    const normalizedSessions = Object.values(byId);
+    normalizedSessions.sort((a, b) =>
+      Number(b?.createdAtMs || b?.startedAtMs || b?.updatedAtMs || 0) -
+      Number(a?.createdAtMs || a?.startedAtMs || a?.updatedAtMs || 0)
+    );
+
+    withTombs["@raceDaySessions_v1"] = JSON.stringify(normalizedSessions);
+
+    // prune global runs to kept sessions if tagged
+    try {
+      const runs = safeJsonParse(withTombs?.["@raceDayRuns_v1"] || "[]", []);
+      if (Array.isArray(runs) && runs.length) {
+        const filtered = runs.filter((r) => {
+          const sid = String(r?.raceDayId || r?.sessionId || r?.id || "").trim();
+          return !sid ? true : keepIds.has(sid);
+        });
+        withTombs["@raceDayRuns_v1"] = JSON.stringify(filtered);
+      }
+    } catch {}
+
+    // prune recent changes to kept sessions if tagged (and already sanitized)
+    try {
+      const ch = safeJsonParse(withTombs?.["@recentChanges_v1"] || "[]", []);
+      const cleaned2 = sanitizeRecentChangesArray(ch);
+      const filtered2 = cleaned2.filter((c) => {
+        const sid = String(c?.raceDayId || c?.sessionId || c?.id || "").trim();
+        return !sid ? true : keepIds.has(sid);
+      });
+      withTombs["@recentChanges_v1"] = JSON.stringify(filtered2);
+    } catch {
+      // keep whatever we had
+    }
+
+    // --- Normalize pointers: if we have an ACTIVE session, clear ended-flag ---
+    try {
+      const activeRaw = withTombs?.["@raceDayActive_v1"] || withTombs?.["@activeRaceDay"] || "";
+      const activeObj = safeJsonParse(activeRaw, null);
+      const activeId = String(activeObj?.id || activeObj?.sessionId || activeObj?.raceDayId || "").trim();
+
+      if (activeId) {
+        const ended = normalizedSessions.some((s) => String(s?.id) === activeId && String(s?.status).toLowerCase() === "ended");
+        if (ended) {
+          // ended session cannot be active
+          withTombs["@raceDayActive_v1"] = "";
+          withTombs["@activeRaceDay"] = "";
+          withTombs["@raceDayEnded_v1"] = "1";
+        } else {
+          // active pointer exists => ended hint should be cleared
+          withTombs["@raceDayEnded_v1"] = "";
+          // mirror pointers (legacy + canon)
+          const canon = JSON.stringify({ ...activeObj, id: activeId });
+          withTombs["@raceDayActive_v1"] = canon;
+          withTombs["@activeRaceDay"] = canon;
+          // ensure session list has an ACTIVE entry if missing
+          const hasSession = normalizedSessions.some((s) => String(s?.id) === activeId);
+          if (!hasSession) {
+            normalizedSessions.unshift({
+              id: activeId,
+              status: "active",
+              trackId: activeObj?.trackId,
+              vehicleIds: activeObj?.vehicleIds,
+              startedAtMs: activeObj?.startedAtMs || Date.now(),
+              createdAtMs: Date.now(),
+              updatedAtMs: Date.now(),
+            });
+            withTombs["@raceDaySessions_v1"] = JSON.stringify(normalizedSessions.slice(0, 3));
+          }
+        }
+      }
+    } catch {}
+
+  } catch {
+    // if sessions key is corrupt, keep it as empty array
+    withTombs["@raceDaySessions_v1"] = withTombs["@raceDaySessions_v1"] || "[]";
+  }
+
+  return withTombs;
+}
+
+function computeChangedKeys(localPayload, mergedPayload) {
+  const changed = [];
+  for (const k of SYNC_KEYS) {
+    if (String(localPayload?.[k] ?? "") !== String(mergedPayload?.[k] ?? "")) changed.push(k);
+  }
+  return changed;
+}
+
+async function pushLocalToCloud({ uid, appVersion = "", reason = "" }) {
+  const deviceId = await getDeviceId();
+
+  const ref = backupDocRef(uid);
+  const cloudSnap = await getDoc(ref);
+  const cloudData = cloudSnap.exists() ? cloudSnap.data() || {} : {};
+  const cloudPayload = cloudData.payload || {};
+
+  const localPayload = await readLocalPayload();
+  const mergedPayload = await buildMergedPayload({ localPayload, cloudPayload });
+  const changedKeys = computeChangedKeys(localPayload, mergedPayload);
+
+  await writeLocalPayload(mergedPayload);
+
+  const localHash = await computeLocalPayloadHash();
+  const cloudHash = hashString(JSON.stringify(cloudPayload || {}));
+  const mergedHash = hashString(JSON.stringify(mergedPayload || {}));
+  const clientUpdatedAt = Date.now();
+
+  const { counts, payloadBytes } = payloadStats(mergedPayload);
+
+  const syncInfo = {
+    lastDirection: "push",
+    lastSyncAtMs: Date.now(),
+    lastPushAtMs: Date.now(),
+    deviceId,
+    platform: Platform.OS,
+    appVersion: String(appVersion || ""),
+    reason: String(reason || ""),
+    localHash,
+    cloudHash,
+    mergedHash,
+    cloudClientUpdatedAt: clientUpdatedAt,
+    payloadBytes,
+    counts,
+    changedKeys,
+    lastError: "",
+  };
+
+  await setDoc(
+    ref,
+    {
+      payload: mergedPayload,
+      clientUpdatedAt,
+      appVersion: String(appVersion || ""),
+      reason: String(reason || ""),
+      deviceId,
+      updatedAt: serverTimestamp(),
+      sync: syncInfo,
+    },
+    { merge: true }
+  );
+
+  const meta = await getMeta();
+  await setMeta({
+    ...meta,
+    lastSyncAt: Date.now(),
+    lastPushAt: Date.now(),
+    lastDirection: "push",
+    lastPushedHash: localHash,
+    lastCloudClientUpdatedAt: clientUpdatedAt,
+    lastDeviceId: deviceId,
+    lastCounts: counts,
+    lastPayloadBytes: payloadBytes,
+    lastChangedKeys: changedKeys,
+    lastError: "",
+  });
+
+  console.log("[CloudSync] PUSH ok", { reason, hash: localHash, deviceId, changedKeys, counts });
+  return { didSync: true, direction: "push", hash: localHash, changedKeys, counts };
+}
+
+async function pullCloudToLocal({ uid }) {
+  const ref = backupDocRef(uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return { didSync: false, direction: null, mode: "no-cloud" };
+
+  const data = snap.data() || {};
+  const cloudPayloadRaw = data.payload || {};
+  const cloudPayload = applyTombstonesToArrays(cloudPayloadRaw);
+
+  const localPayload = await readLocalPayload();
+
+  // ✅ Merge (local + cloud) so a pull never wipes newer local-only fields (ex: LiveRC sync blobs)
+  const mergedPayload = await buildMergedPayload({ localPayload, cloudPayload: cloudPayloadRaw });
+  const changedKeys = computeChangedKeys(localPayload, mergedPayload);
+
+  await writeLocalPayload(mergedPayload);
+
+  const localHash = await computeLocalPayloadHash();
+  const cloudHash = hashString(JSON.stringify(cloudPayloadRaw || {}));
+  const cloudClientUpdatedAt = Number(data.clientUpdatedAt) || 0;
+
+  const { counts, payloadBytes } = payloadStats(mergedPayload);
+
+  const meta = await getMeta();
+  await setMeta({
+    ...meta,
+    lastSyncAt: Date.now(),
+    lastPullAt: Date.now(),
+    lastDirection: "pull",
+    lastPushedHash: localHash,
+    lastCloudClientUpdatedAt: cloudClientUpdatedAt,
+    lastCounts: counts,
+    lastPayloadBytes: payloadBytes,
+    lastChangedKeys: changedKeys,
+    lastError: "",
+  });
+
+  console.log("[CloudSync] PULL ok", { hash: localHash, cloudClientUpdatedAt, changedKeys, counts });
+  return { didSync: true, direction: "pull", hash: localHash, changedKeys, counts, cloudHash };
+}
+
+export async function autoCloudSyncOnSignIn({ uid, appVersion = "" }) {
+  if (!uid) return { didSync: false, mode: "missing-uid" };
+
+  const ref = backupDocRef(uid);
+  const snap = await getDoc(ref);
+  const cloudExists = snap.exists();
+  const localEmpty = await isLocalEmpty();
+
+  if (localEmpty && cloudExists) return pullCloudToLocal({ uid });
+
+  if (!cloudExists) {
+    const payload = await readLocalPayload();
+    const anyLocal = Object.values(payload || {}).some((v) => {
+      const t = String(v ?? "").trim();
+      return t && t !== "[]" && t !== "{}";
+    });
+    if (anyLocal) return pushLocalToCloud({ uid, appVersion, reason: "initial" });
+    return { didSync: false, direction: null, reason: "no-cloud-and-local-empty" };
+  }
+
+  const meta = await getMeta();
+  const localHash = await computeLocalPayloadHash();
+  const lastPushedHash = String(meta?.lastPushedHash || "");
+
+  if (!lastPushedHash || lastPushedHash !== localHash) {
+    return pushLocalToCloud({ uid, appVersion, reason: "signin-local-changed" });
+  }
+
+  return { didSync: false, direction: null, reason: "signin-no-change" };
+}
+
+export async function maybeAutoSyncTick({ uid, appVersion = "", reason = "tick" }) {
+  if (!uid) return { didSync: false, mode: "missing-uid" };
+
+  const ref = backupDocRef(uid);
+
+  let cloudSnap;
+  try {
+    cloudSnap = await getDoc(ref);
+  } catch (e) {
+    const meta = await getMeta();
+    await setMeta({ ...meta, lastError: e?.message || String(e) });
+    return { didSync: false, direction: null, reason: "cloud-unreachable", error: e?.message || String(e) };
+  }
+
+  const cloudExists = cloudSnap.exists();
+  const cloudData = cloudExists ? cloudSnap.data() || {} : {};
+  const cloudClientUpdatedAt = Number(cloudData.clientUpdatedAt) || 0;
+
+  const meta = await getMeta();
+  const localEmpty = await isLocalEmpty();
+  const localHash = await computeLocalPayloadHash();
+  const lastPushedHash = String(meta?.lastPushedHash || "");
+  const lastCloudSeen = Number(meta?.lastCloudClientUpdatedAt || 0) || 0;
+
+  const localDirty = !lastPushedHash || lastPushedHash !== localHash;
+
+  if (localEmpty && cloudExists) return pullCloudToLocal({ uid });
+  if (cloudExists && cloudClientUpdatedAt > lastCloudSeen && !localDirty) return pullCloudToLocal({ uid });
+  if (localDirty) return pushLocalToCloud({ uid, appVersion, reason: reason || "auto" });
+
+  return { didSync: false, direction: null, reason: "no-change" };
+}
+
+// Backwards-compatible export name (older dashboard calls this).
+export async function maybeAutoBackupIfChanged({ uid, appVersion = "", reason = "auto" }) {
+  return maybeAutoSyncTick({ uid, appVersion, reason });
+}
+
+export async function runManualCloudSync({ uid, appVersion = "" }) {
+  if (!uid) return { didSync: false, mode: "missing-uid" };
+  // Manual sync should behave the SAME as auto-sync: pull when cloud is newer and local is clean, push when local is dirty.
+  return maybeAutoSyncTick({ uid, appVersion, reason: "manual" });
+}

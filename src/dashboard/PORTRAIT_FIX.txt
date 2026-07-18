@@ -1,0 +1,68 @@
+
+import React from 'react';
+import { SafeAreaView, View, ScrollView } from 'react-native';
+
+/*
+DROP-IN PATCH
+
+Inside DashboardScreen.js:
+1. KEEP your existing mainContent exactly as-is.
+2. Replace ONLY the portrait render section with this structure.
+
+IMPORTANT:
+- mainContent stays inside ScrollView
+- Bottom dock stays outside ScrollView
+- Spacer prevents overlap
+*/
+
+{/* PORTRAIT VIEW */}
+<View style={styles.portraitRoot}>
+  <ScrollView
+    style={styles.portraitScroll}
+    contentContainerStyle={styles.portraitScrollContent}
+    showsVerticalScrollIndicator={false}
+  >
+    <DashboardHeader
+      userName={auth.userFirstName}
+      statusDotColor={auth.statusDotColor}
+      onAuthPress={auth.handleAuthPress}
+      onAuthLongPress={auth.handleAuthLongPress}
+    />
+
+    {mainContent}
+
+    <View style={{ height: 90 }} />
+  </ScrollView>
+
+  <View style={styles.portraitBottomDock}>
+    <BottomActions router={router} />
+    <Footer
+      version={auth.version}
+      lastSyncAt={auth.lastSyncAt}
+    />
+  </View>
+</View>
+
+
+/* ADD THESE STYLES INSIDE dashboard.styles.js */
+
+portraitRoot: {
+  flex: 1,
+},
+
+portraitScroll: {
+  flex: 1,
+},
+
+portraitScrollContent: {
+  padding: 16,
+  paddingBottom: 0,
+},
+
+portraitBottomDock: {
+  position: 'absolute',
+  left: 16,
+  right: 16,
+  bottom: 10,
+  backgroundColor: 'transparent',
+},

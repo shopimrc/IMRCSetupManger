@@ -1,0 +1,39 @@
+{
+  "cli": {
+    "version": ">= 3.17.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID": "839652493357-24gkqa11kk9mtrpb8terrebf2t7nvag0.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "839652493357-bq9e4li66lbd9gha8cvq91dedeis13ta.apps.googleusercontent.com"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "developmentClient": false,
+      "distribution": "store",
+      "env": {
+        "EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID": "839652493357-24gkqa11kk9mtrpb8terrebf2t7nvag0.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "839652493357-bq9e4li66lbd9gha8cvq91dedeis13ta.apps.googleusercontent.com"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

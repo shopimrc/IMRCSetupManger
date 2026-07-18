@@ -1,0 +1,14 @@
+export * from './setupChassisProfiles/index';
+export { default as panCar } from './setupChassisProfiles/panCar';
+export { default as sct2wd } from './setupChassisProfiles/sct2wd';
+export { default as sct4wd } from './setupChassisProfiles/sct4wd';
+export { default as buggy2wd } from './setupChassisProfiles/buggy2wd';
+export { default as buggy4wd } from './setupChassisProfiles/buggy4wd';
+export { default as touring } from './setupChassisProfiles/touring';
+export { default as f1 } from './setupChassisProfiles/f1';
+export { default as drag } from './setupChassisProfiles/drag';
+export { default as dirtOval } from './setupChassisProfiles/dirtOval';
+export { default as mini } from './setupChassisProfiles/mini';
+export { default as monsterTruck } from './setupChassisProfiles/monsterTruck';
+export { default as crawler } from './setupChassisProfiles/crawler';
+export { default as generic } from './setupChassisProfiles/generic';

@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "839652493357",
+    "project_id": "imrc-racing-n-repair",
+    "storage_bucket": "imrc-racing-n-repair.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839652493357:android:4985919a3e2c5ab0fc50a4",
+        "android_client_info": {
+          "package_name": "com.joshy788.imrcsetupmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839652493357-24gkqa11kk9mtrpb8terrebf2t7nvag0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joshy788.imrcsetupmanager",
+            "certificate_hash": "061afc2b55b6e31b5d8a463522a5ca972350573c"
+          }
+        },
+        {
+          "client_id": "839652493357-mdin80047qhpdmk1tlg8go1hpcp79ijd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joshy788.imrcsetupmanager",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "839652493357-mo8aun3sq89moi4o65h95nul6reo7hc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joshy788.imrcsetupmanager",
+            "certificate_hash": "a9e95e8763c7bfa9c658d5fb8e5fce085cd04594"
+          }
+        },
+        {
+          "client_id": "839652493357-ufacb1n4qgvg6n8hvguin9g8njcthopd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNp-lJY-9zIHPIVTjL9sjciGf8DrTLpNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839652493357-6q65uh7d8483a6qhvsp0jfupt88lj33e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "839652493357-bq9e4li66lbd9gha8cvq91dedeis13ta.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joshy788.imrcsetupmanager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

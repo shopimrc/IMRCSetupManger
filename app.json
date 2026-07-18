@@ -1,0 +1,108 @@
+{
+  "expo": {
+    "name": "imrc-setup-manager",
+    "slug": "imrc-setup-manager",
+    "version": "2.0.12",
+    "android": {
+      "versionCode": 2012,
+      "package": "com.joshy788.imrcsetupmanager",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "googleServicesFile": "./google-services.json",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": [
+            "DEFAULT",
+            "BROWSABLE"
+          ],
+          "data": [
+            {
+              "scheme": "file",
+              "pathPattern": ".*\\.imrc"
+            },
+            {
+              "scheme": "content",
+              "mimeType": "application/octet-stream"
+            }
+          ]
+        }
+      ],
+      "softwareKeyboardLayoutMode": "resize"
+    },
+    "ios": {
+      "buildNumber": "2012",
+      "bundleIdentifier": "com.joshy788.imrcsetupmanager",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "IMRC Setup",
+            "LSHandlerRank": "Alternate",
+            "CFBundleTypeExtensions": [
+              "imrc"
+            ],
+            "LSItemContentTypes": [
+              "public.data"
+            ]
+          }
+        ],
+        "LSSupportsOpeningDocumentsInPlace": true,
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "Allow IMRC Setup Manager to find nearby RC tracks.",
+        "NSMotionUsageDescription": "Allow IMRC Setup Manager to use motion sensors for the camber gauge."
+      }
+    },
+    "icon": "./assets/icon.png",
+    "scheme": "imrcsetupmanager",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "plugins": [
+      "expo-dev-client",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      "./plugins/withIosPodsFix",
+      "./plugins/withNonModularHeaders",
+      "expo-router",
+      "expo-web-browser",
+      "expo-sharing",
+      "expo-status-bar",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow IMRC Setup Manager to find nearby RC tracks."
+        }
+      ],
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow IMRC Setup Manager to use motion sensors for the camber gauge."
+        }
+      ],
+      "./plugins/withImrcFileIntents",
+      "./plugins/withGoogleOAuthIntents",
+      "expo-mail-composer"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c271c03e-e2f8-4cfb-ae1c-22fdf5e6968a"
+      }
+    },
+    "updates": {
+      "enabled": false
+    },
+    "runtimeVersion": "2.0.12"
+  }
+}
