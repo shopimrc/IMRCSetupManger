@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "Grand Junction Riverside Raceway",
+  "trackType": "Carpet Oval",
+  "liveRcUrl": "https://jjsraceway.liverc.com/",
+  "streetAddress": "801 Kimball Avenue",
+  "cityState": "Grand Junction, CO",
+  "zip": "81501",
+  "phone": "9702432505",
+  "direction": "Counter Clockwise",
+  "surface": "CRC Black",
+  "tractionLevel": "Medium/High",
+  "runLine": "",
+  "trackDimensions": "",
+  "notes": ""
+}
