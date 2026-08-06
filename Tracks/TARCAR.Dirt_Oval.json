@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "T.A.R.C.A.R. Oval Club",
+  "trackType": "Dirt Oval",
+  "liveRcUrl": "https://tarcartoledo.liverc.com/",
+  "streetAddress": "7220 Nebraska Ave.",
+  "cityState": "Toledo, OH",
+  "zip": "43615",
+  "phone": "",
+  "direction": "Counter-Clockwise",
+  "surface": "Dirt/Clay Mix",
+  "tractionLevel": "Medium",
+  "runLine": "350'",
+  "trackDimensions": "",
+  "notes": "Fast, Banked track with 18' wide lanes. Speed is an understatment"
+}
