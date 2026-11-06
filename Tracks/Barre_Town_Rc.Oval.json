@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "Barre Town Rc",
+  "trackType": "Oval",
+  "liveRcUrl": "https://barretownrc.liverc.com",
+  "streetAddress": "103 Circle St",
+  "cityState": "Barre, VT",
+  "zip": "05641",
+  "phone": "",
+  "direction": "Counter Clockwise",
+  "surface": "Crc Black",
+  "tractionLevel": "Medium",
+  "runLine": "120",
+  "trackDimensions": "",
+  "notes": ""
+}
