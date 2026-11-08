@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "Mobile hobbies - Patriot Speedway",
+  "trackType": "Dirt Oval",
+  "liveRcUrl": "https://mobilehobbiestc13.liverc.com",
+  "streetAddress": "3824 Robert Riding Rd.",
+  "cityState": "Shelby, NC",
+  "zip": "28150",
+  "phone": "9805201315",
+  "direction": "",
+  "surface": "High Bite Red Clay",
+  "tractionLevel": "High",
+  "runLine": "135",
+  "trackDimensions": "40’x 80’",
+  "notes": ""
+}
